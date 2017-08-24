@@ -55,4 +55,30 @@ class Providers extends ApiAbstract
 
         return $response->provider[0];
     }
+
+    /**
+     * Get more detail about the provider, e.g. login form.
+     *
+     * @param int
+     * @return \stdClass
+     */
+    public function getDetails($providerId)
+    {
+        $url = $this->getEndpoint('/providers/' . $providerId);
+
+        $requestHeaders = [
+            $this->sessionManager->getAuthorizationHeaderString()
+        ];
+
+        $response = $this->httpClient->get($url, $requestHeaders);
+
+        $response = json_decode($response);
+
+        if (empty($response->provider)) {
+
+            return new \stdClass;
+        }
+
+        return $response->provider[0];
+    }
 }
